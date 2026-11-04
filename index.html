@@ -43,6 +43,10 @@
   --font-love: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-love-ar: 'Amiri', 'Geeza Pro', 'Noto Naskh Arabic', 'Times New Roman', serif;
   --glass-on-ink: rgba(255, 255, 255, 0.08);
+  --night: #05080F;
+  --night-2: #0E1626;
+  --on-night: #F3F6FB;
+  --shadow-night: rgba(2, 5, 12, 0.85);
   color-scheme: light;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -87,13 +91,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .ring-text .ar { font-size: 17px; letter-spacing: 0; }
 .ring-text .sep { fill: var(--red); letter-spacing: 0; }
 .lens { position: absolute; inset: 11%; border-radius: 50%; background: var(--sky-wash); box-shadow: 0 0 0 7px var(--paper), 0 0 0 8px var(--line), 0 30px 60px -22px var(--shadow); perspective: 1100px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
-.lens-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.45, .05, .2, 1); }
+.lens-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.25s cubic-bezier(.65, 0, .35, 1); will-change: transform; }
 .lens.is-flipped .lens-card { transform: rotateY(180deg); }
 .lens-face { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .lens-front { -webkit-mask-image: -webkit-radial-gradient(white, black); }
 .lens-front img { width: 100%; height: 100%; object-fit: cover; transform-origin: 46% 52%; animation: drift 20s ease-in-out infinite alternate; }
 .lens-back { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; margin: 0; padding: 0; border: 0; background: var(--ink); box-shadow: inset 0 0 0 14px var(--ink), inset 0 0 0 16px var(--ink-2); color: var(--on-ink); font-family: var(--font-display); font-size: clamp(22px, 6.4vw, 30px); font-weight: 700; letter-spacing: -0.01em; cursor: pointer; pointer-events: none; transform: rotateY(180deg); }
-.lens-back svg { width: 38px; height: 38px; fill: var(--red); animation: beat 1.6s ease-in-out infinite; }
+.lens-back svg { width: 38px; height: 38px; fill: var(--red); animation: beat 2.4s ease-in-out infinite; }
 .lens-back:focus-visible { border-radius: 50%; outline-offset: -10px; }
 .lens.is-flipped .lens-front { pointer-events: none; }
 .lens.is-flipped .lens-back { pointer-events: auto; }
@@ -258,38 +262,42 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .dock .btn { width: 100%; }
 .dock.is-away { transform: translateY(110%); }
 
-/* hidden message behind the mirror */
-.egg { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; justify-content: space-between; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: var(--ink); color: var(--on-ink); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); animation: egg-in .45s ease both; }
-.egg.is-closing { animation: egg-out .28s ease both; }
-.egg-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.egg-rows { position: relative; display: flex; flex-direction: column; gap: 4px; padding-block: 14px; }
-.egg-rows-top { padding-top: 72px; }
-.egg-row { overflow: hidden; }
-.egg-track { display: flex; align-items: center; width: max-content; animation: marquee 52s linear infinite; }
-.egg-row.r2 .egg-track, .egg-row.r4 .egg-track { animation-direction: reverse; animation-duration: 64s; }
-.egg-ph { flex: none; padding-inline: 16px; font-family: var(--font-body); font-size: clamp(19px, 4.8vw, 28px); font-weight: 500; line-height: 1.5; color: var(--sky); white-space: nowrap; unicode-bidi: isolate; }
-.egg-ph[lang="ar"], .egg-ph[lang="fa"] { font-family: var(--font-arabic); }
-.egg-row.r2 .egg-ph, .egg-row.r4 .egg-ph { font-size: clamp(14px, 3.7vw, 20px); color: var(--on-ink-mute); }
-.egg-sep { flex: none; width: 13px; height: 13px; fill: var(--red); }
-.egg-center { position: relative; flex: 1 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-block: 10px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); text-align: center; }
-.egg-heart { position: relative; display: grid; place-items: center; width: 76px; height: 76px; margin-bottom: 14px; }
-.egg-heart > svg { position: relative; z-index: 1; width: 62px; height: 62px; fill: var(--red); animation: beat 1.6s ease-in-out infinite; }
-.egg-ping { position: absolute; inset: 0; border: 2px solid var(--red); border-radius: 50%; opacity: 0; animation: egg-ping 2.4s ease-out infinite; }
-.egg-ping.p2 { animation-delay: 1.2s; }
-.egg-burst { position: absolute; left: 50%; top: 50%; z-index: 2; width: 0; height: 0; pointer-events: none; }
-.egg-fly { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); animation: fly 1.5s cubic-bezier(.2, .7, .2, 1) both; }
-.egg-fly svg { display: block; width: 100%; height: 100%; fill: var(--red); }
-.egg-fly.sky svg { fill: var(--sky); }
-.egg-hi { margin: 0; font-family: var(--font-love); font-size: clamp(22px, 5.8vw, 32px); font-style: italic; color: var(--sky); }
-.egg-title { margin: 4px 0 0; font-family: var(--font-love); font-size: clamp(34px, 9.6vw, 72px); font-style: italic; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; color: var(--on-ink); }
+/* hidden message: a night sea behind the mirror */
+.egg { position: fixed; inset: 0; z-index: 60; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; background: var(--night); color: var(--on-night); }
+.egg-sea { position: fixed; inset: 0; display: block; width: 100%; height: 100%; }
+.egg.no-sea { background: linear-gradient(180deg, var(--night) 0%, var(--night-2) 60%, var(--night) 61%, var(--night) 100%); }
+.egg.no-sea .egg-sea { display: none; }
+.egg-sky { position: relative; z-index: 1; display: flex; justify-content: center; padding-top: calc(78px + env(safe-area-inset-top, 0px)); padding-bottom: 24px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+.egg-center { display: flex; flex-direction: column; align-items: center; max-width: 760px; text-align: center; text-shadow: 0 2px 18px var(--shadow-night); }
+.egg-heart { position: relative; display: grid; place-items: center; width: 54px; height: 54px; margin-bottom: 16px; }
+.egg-heart::before { content: ""; position: absolute; inset: -16px; border-radius: 50%; background: radial-gradient(circle, rgba(224, 38, 43, 0.32), rgba(224, 38, 43, 0) 68%); animation: glow 4.8s ease-in-out infinite; }
+.egg-heart svg { position: relative; width: 44px; height: 44px; fill: var(--red); animation: beat 2.4s ease-in-out infinite; }
+.egg-hi { margin: 0; font-family: var(--font-love); font-size: clamp(22px, 5.6vw, 30px); font-style: italic; line-height: 1.3; color: var(--sky); }
+.egg-title { margin: 4px 0 0; font-family: var(--font-love); font-size: clamp(32px, 9vw, 64px); font-style: italic; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; color: var(--on-night); }
 .egg-title span { display: block; }
-.egg-ar { margin: 18px 0 0; font-family: var(--font-love-ar); font-size: clamp(25px, 6.8vw, 42px); font-weight: 700; line-height: 1.55; color: var(--sky); }
-.egg-small { margin: 18px 0 0; font-size: clamp(15px, 4vw, 18px); color: var(--on-ink-mute); }
-.egg-ar-small { margin-top: 2px; font-size: clamp(21px, 5.6vw, 30px); font-weight: 400; }
-.egg-line { animation: rise .8s var(--d, 0ms) cubic-bezier(.2, .7, .2, 1) both; }
-.egg-close { position: fixed; z-index: 3; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px)); display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 1.5px solid var(--line-on-ink); border-radius: 50%; background: var(--glass-on-ink); color: var(--on-ink); cursor: pointer; }
-.egg-close svg { width: 22px; height: 22px; }
-.egg-close:focus-visible { border-radius: 50%; }
+.egg-ar { margin: 16px 0 0; font-family: var(--font-love-ar); font-size: clamp(23px, 6.2vw, 38px); font-weight: 700; line-height: 1.55; color: var(--sky); text-wrap: balance; }
+.egg-small { margin: 16px 0 0; font-size: clamp(15px, 4vw, 17px); line-height: 1.5; color: var(--on-ink-mute); }
+.egg-ar-small { margin-top: 2px; font-size: clamp(20px, 5.4vw, 26px); font-weight: 400; }
+.egg-line { animation: egg-rise 1.4s calc(var(--base, 700ms) + var(--d, 0ms)) cubic-bezier(.22, .61, .36, 1) both; }
+.egg-rows { position: fixed; z-index: 1; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 2px; padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); pointer-events: none; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14%, #000 86%, transparent 100%); animation: egg-fade 2.4s 1.2s ease both; }
+.egg-row { overflow: hidden; }
+.egg-track { display: flex; align-items: center; width: max-content; animation: marquee 110s linear infinite; will-change: transform; }
+.egg-row.r2 .egg-track { animation-duration: 90s; animation-direction: reverse; }
+.egg-row.r3 .egg-track { animation-duration: 72s; }
+.egg-ph { flex: none; padding-inline: 14px; font-family: var(--font-body); font-size: 13px; font-weight: 500; line-height: 1.7; color: var(--sky); white-space: nowrap; unicode-bidi: isolate; opacity: 0.45; }
+.egg-row.r2 .egg-ph { font-size: 16px; opacity: 0.6; }
+.egg-row.r3 .egg-ph { font-size: 20px; opacity: 0.78; }
+.egg-ph[lang="ar"], .egg-ph[lang="fa"] { font-family: var(--font-arabic); }
+.egg-sep { flex: none; width: 9px; height: 9px; fill: var(--red); opacity: 0.8; }
+.egg-tools { position: fixed; z-index: 3; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px)); display: flex; gap: 10px; animation: egg-fade 1s 1s ease both; }
+.egg-btn { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 1.5px solid var(--line-on-ink); border-radius: 50%; background: var(--glass-on-ink); color: var(--on-night); cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.egg-btn svg { width: 22px; height: 22px; }
+.egg-btn:focus-visible { border-radius: 50%; }
+.egg-btn .ic-off { display: none; }
+.egg-btn[aria-pressed="false"] .ic-on { display: none; }
+.egg-btn[aria-pressed="false"] .ic-off { display: block; }
+.egg.is-leaving .egg-sky, .egg.is-leaving .egg-rows, .egg.is-leaving .egg-tools { animation: egg-out .4s ease both; }
+@media (max-height: 560px) { .egg-rows { display: none; } }
 
 @media (max-width: 879px) {
   .cta .btn, .loc-btns .btn, .contact-btns .btn { flex: 1 1 100%; }
@@ -333,11 +341,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 @keyframes marquee { to { transform: translateX(-25%); } }
 @keyframes ping { 0% { opacity: .5; transform: scale(.6); } 100% { opacity: 0; transform: scale(3.4); } }
 @keyframes open { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-@keyframes beat { 0%, 60%, 100% { transform: scale(1); } 12% { transform: scale(1.16); } 24% { transform: scale(1); } 36% { transform: scale(1.1); } }
-@keyframes egg-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes beat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.07); } 28% { transform: scale(1); } 42% { transform: scale(1.04); } }
+@keyframes glow { 0%, 100% { opacity: .55; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.06); } }
+@keyframes egg-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes egg-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes egg-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes egg-ping { 0% { opacity: .7; transform: scale(.6); } 100% { opacity: 0; transform: scale(2.3); } }
-@keyframes fly { 0% { opacity: 0; transform: translate(0, 0) scale(.3); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1) rotate(var(--r)); } }
 @supports (animation-timeline: view()) {
   .lift { animation: lift linear both; animation-timeline: view(); animation-range: entry 0% cover 26%; }
   @keyframes lift { from { transform: translateY(44px); } to { transform: none; } }
@@ -668,27 +676,27 @@ a.mail { color: var(--on-ink); text-decoration: underline; text-decoration-thick
 </div>
 
 <div class="egg" id="egg" role="dialog" aria-modal="true" aria-labelledby="egg-title" lang="en" hidden>
-  <svg class="egg-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <path class="cd-rib" d="M-80 660C220 480 430 730 720 570S1060 280 1300 350"></path>
-    <path class="cd-line" d="M-60 740C250 570 470 800 780 640S1090 400 1280 460"></path>
-  </svg>
-  <div class="egg-rows egg-rows-top" aria-hidden="true"><div class="egg-row r1"></div><div class="egg-row r2"></div></div>
-  <div class="egg-center">
-    <div class="egg-heart egg-line" style="--d: 100ms" aria-hidden="true">
-      <span class="egg-ping"></span><span class="egg-ping p2"></span>
-      <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
-      <span class="egg-burst" id="egg-burst"></span>
+  <canvas class="egg-sea" id="egg-sea" aria-hidden="true"></canvas>
+  <div class="egg-sky">
+    <div class="egg-center" id="egg-center">
+      <div class="egg-heart egg-line" style="--d: 0ms" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.8z"></path></svg></div>
+      <p class="egg-hi egg-line" style="--d: 160ms" data-msg="hi"></p>
+      <h2 class="egg-title" id="egg-title"><span class="egg-line" style="--d: 320ms" data-msg="t1"></span><span class="egg-line" style="--d: 500ms" data-msg="t2"></span></h2>
+      <p class="egg-ar egg-line" lang="ar" dir="rtl" style="--d: 760ms" data-msg="ar1"></p>
+      <p class="egg-small egg-line" style="--d: 1000ms" data-msg="en2"></p>
+      <p class="egg-ar egg-ar-small egg-line" lang="ar" dir="rtl" style="--d: 1140ms" data-msg="ar2"></p>
     </div>
-    <p class="egg-hi egg-line" style="--d: 240ms" data-msg="hi"></p>
-    <h2 class="egg-title" id="egg-title"><span class="egg-line" style="--d: 360ms" data-msg="t1"></span><span class="egg-line" style="--d: 480ms" data-msg="t2"></span></h2>
-    <p class="egg-ar egg-line" lang="ar" dir="rtl" style="--d: 660ms" data-msg="ar1"></p>
-    <p class="egg-small egg-line" style="--d: 840ms" data-msg="en2"></p>
-    <p class="egg-ar egg-ar-small egg-line" lang="ar" dir="rtl" style="--d: 960ms" data-msg="ar2"></p>
   </div>
-  <div class="egg-rows egg-rows-bottom" aria-hidden="true"><div class="egg-row r3"></div><div class="egg-row r4"></div></div>
-  <button class="egg-close" type="button" id="egg-close" aria-label="Zatvori">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
-  </button>
+  <div class="egg-rows" aria-hidden="true"><div class="egg-row r1"></div><div class="egg-row r2"></div><div class="egg-row r3"></div></div>
+  <div class="egg-tools">
+    <button class="egg-btn" type="button" id="egg-music" aria-pressed="true" aria-label="Isključi muziku">
+      <svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg>
+      <svg class="ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M22 9l-6 6"></path><path d="M16 9l6 6"></path></svg>
+    </button>
+    <button class="egg-btn" type="button" id="egg-close" aria-label="Zatvori">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -759,14 +767,209 @@ a.mail { color: var(--on-ink); text-decoration: underline; text-decoration-thick
 </script>
 
 <script>
+/* Night sea, drawn live with WebGL: a moving wave field lit by a low moon. */
+function createSea(canvas) {
+  var gl = null;
+  try {
+    gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'low-power' }) ||
+         canvas.getContext('experimental-webgl');
+  } catch (e) { gl = null; }
+  if (!gl) return null;
+
+  var VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.0,1.0);}';
+  var FS = [
+    '#ifdef GL_FRAGMENT_PRECISION_HIGH',
+    'precision highp float;',
+    '#else',
+    'precision mediump float;',
+    '#endif',
+    'uniform vec2 uRes;',
+    'uniform float uTime;',
+    'uniform float uK;',
+    'uniform float uF;',
+    'uniform float uScale;',
+    'uniform vec3 uMoon;',
+    'const vec3 ZEN = vec3(0.0004, 0.0008, 0.0021);',
+    'const vec3 HOR = vec3(0.0062, 0.0105, 0.0215);',
+    'const vec3 DEEP = vec3(0.0003, 0.0009, 0.0021);',
+    'const vec3 MOONC = vec3(1.0, 0.96, 0.88);',
+    'float hash12(vec2 p) {',
+    '  vec3 p3 = fract(vec3(p.xyx) * 0.1031);',
+    '  p3 += dot(p3, p3.yzx + 33.33);',
+    '  return fract((p3.x + p3.y) * p3.z);',
+    '}',
+    'float noise(vec2 p) {',
+    '  vec2 i = floor(p); vec2 f = fract(p);',
+    '  vec2 u = f * f * (3.0 - 2.0 * f);',
+    '  return mix(mix(hash12(i), hash12(i + vec2(1.0, 0.0)), u.x), mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), u.x), u.y);',
+    '}',
+    'vec3 sky(vec3 d) {',
+    '  float h = clamp(d.y, 0.0, 1.0);',
+    '  vec3 c = mix(HOR, ZEN, pow(h, 0.42));',
+    '  float m = max(dot(d, uMoon), 0.0);',
+    '  c += vec3(0.05, 0.06, 0.085) * pow(m, 420.0);',
+    '  c += vec3(0.010, 0.014, 0.024) * pow(m, 20.0);',
+    '  return c;',
+    '}',
+    'vec3 moonDisk(vec3 d) {',
+    '  float c = dot(d, uMoon);',
+    '  float r = 0.0145;',
+    '  float disk = smoothstep(cos(r + 0.0013), cos(r - 0.0013), c);',
+    '  if (disk <= 0.0) return vec3(0.0);',
+    '  vec3 right = normalize(cross(uMoon, vec3(0.0, 1.0, 0.0)));',
+    '  vec3 up = cross(right, uMoon);',
+    '  vec2 q = vec2(dot(d, right), dot(d, up)) / r;',
+    '  float mar = noise(q * 2.3 + 3.0) * 0.6 + noise(q * 5.1 + 7.0) * 0.4;',
+    '  float shade = 1.0 - 0.3 * smoothstep(0.45, 0.78, mar);',
+    '  float limb = 1.0 - 0.22 * dot(q, q);',
+    '  return MOONC * 3.0 * disk * shade * limb;',
+    '}',
+    'vec3 stars(vec3 d) {',
+    '  vec2 g = gl_FragCoord.xy / (uScale * 5.0);',
+    '  vec2 cell = floor(g);',
+    '  float h = hash12(cell);',
+    '  if (h < 0.991) return vec3(0.0);',
+    '  vec2 f = fract(g) - 0.5 - (vec2(hash12(cell + 7.1), hash12(cell + 3.7)) - 0.5) * 0.5;',
+    '  float s = smoothstep(0.2, 0.0, length(f));',
+    '  float tw = 0.6 + 0.4 * sin(uTime * (0.5 + h * 1.7) + h * 40.0);',
+    '  float alt = smoothstep(0.03, 0.3, d.y);',
+    '  float nearMoon = 1.0 - smoothstep(0.985, 0.999, dot(d, uMoon));',
+    '  return vec3(0.75, 0.82, 1.0) * s * tw * alt * nearMoon * (0.04 + 0.22 * fract(h * 97.0));',
+    '}',
+    'vec3 seaNormal(vec2 p, float t, float fp) {',
+    '  vec2 g = vec2(0.0);',
+    '  float L = 30.0;',
+    '  for (int i = 0; i < 18; i++) {',
+    '    float fi = float(i);',
+    '    float k = 6.2831853 / L;',
+    '    float w = sqrt(9.81 * k);',
+    '    float ang = (0.25 + fi * 0.06) * sin(fi * 2.399 + 0.7);',
+    '    vec2 dir = vec2(sin(ang), cos(ang));',
+    '    float slope = 0.15 / (1.0 + fi * 0.2);',
+    '    float att = smoothstep(2.0 * fp, 6.0 * fp, L);',
+    '    float ph = dot(dir, p) * k - w * t + fi * 1.913;',
+    '    g += dir * (slope * cos(ph) * att);',
+    '    L *= 0.72;',
+    '  }',
+    '  return normalize(vec3(-g.x, 1.0, -g.y));',
+    '}',
+    'void main() {',
+    '  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;',
+    '  vec3 rd = normalize(vec3(uv.x, uv.y + uK, -uF));',
+    '  vec3 col;',
+    '  if (rd.y > 0.0) {',
+    '    col = sky(rd) + moonDisk(rd) + stars(rd);',
+    '  } else {',
+    '    float t = 2.6 / -rd.y;',
+    '    vec2 p = rd.xz * t;',
+    '    float fp = t / (uF * uRes.y) / max(-rd.y, 0.015);',
+    '    vec3 n = seaNormal(p, uTime, fp);',
+    '    vec3 r = reflect(rd, n);',
+    '    r.y = abs(r.y) + 0.0005;',
+    '    r = normalize(r);',
+    '    float ndv = max(dot(n, -rd), 0.0);',
+    '    float fres = 0.02 + 0.98 * pow(1.0 - ndv, 5.0);',
+    '    float m = max(dot(r, uMoon), 0.0);',
+    '    vec3 refl = sky(r) + MOONC * (pow(m, 7000.0) * 90.0 + pow(m, 900.0) * 0.5);',
+    '    col = mix(DEEP, refl, fres);',
+    '    float fog = 1.0 - exp(-t * 0.004);',
+    '    col = mix(col, HOR * 0.9, fog);',
+    '  }',
+    '  col = vec3(1.0) - exp(-col * 1.6);',
+    '  col = pow(col, vec3(1.0 / 2.2));',
+    '  col += (hash12(gl_FragCoord.xy + fract(uTime * 7.0) * 61.0) - 0.5) / 255.0;',
+    '  gl_FragColor = vec4(col, 1.0);',
+    '}'
+  ].join('\n');
+
+  function shader(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { throw new Error(gl.getShaderInfoLog(s)); }
+    return s;
+  }
+  var prog;
+  try {
+    prog = gl.createProgram();
+    gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { throw new Error(gl.getProgramInfoLog(prog)); }
+  } catch (e) {
+    if (window.console) console.warn('Sea shader failed:', e);
+    return null;
+  }
+  gl.useProgram(prog);
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, 'a');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  var u = {};
+  ['uRes', 'uTime', 'uK', 'uF', 'uScale', 'uMoon'].forEach(function (n) { u[n] = gl.getUniformLocation(prog, n); });
+
+  var F = 1.25, horizon = 0.62, moonX = 0.78, moonY = 0.17, scale = 1, raf = 0, t0 = 0, running = false;
+
+  function setup() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var w = canvas.clientWidth || window.innerWidth, h = canvas.clientHeight || window.innerHeight;
+    scale = dpr;
+    var cw = Math.max(1, Math.round(w * dpr)), ch = Math.max(1, Math.round(h * dpr));
+    if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
+    gl.viewport(0, 0, cw, ch);
+    var K = horizon - 0.5;
+    var aspect = cw / ch;
+    var mx = (moonX - 0.5) * aspect, my = 0.5 - moonY + K;
+    var len = Math.sqrt(mx * mx + my * my + F * F);
+    gl.uniform2f(u.uRes, cw, ch);
+    gl.uniform1f(u.uK, K);
+    gl.uniform1f(u.uF, F);
+    gl.uniform1f(u.uScale, scale);
+    gl.uniform3f(u.uMoon, mx / len, my / len, -F / len);
+  }
+  function draw(seconds) {
+    gl.uniform1f(u.uTime, seconds);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  function frame(now) {
+    if (!running) return;
+    draw((now - t0) / 1000 * 0.85 + 40.0);
+    raf = requestAnimationFrame(frame);
+  }
+  return {
+    layout: function (opts) {
+      if (opts) {
+        if (opts.horizon != null) horizon = opts.horizon;
+        if (opts.moonX != null) moonX = opts.moonX;
+        if (opts.moonY != null) moonY = opts.moonY;
+      }
+      setup();
+    },
+    drawAt: function (seconds) { setup(); draw(seconds); },
+    start: function () {
+      if (running) return;
+      running = true; setup();
+      t0 = performance.now();
+      raf = requestAnimationFrame(frame);
+    },
+    stop: function () { running = false; cancelAnimationFrame(raf); }
+  };
+}
+</script>
+
+<script>
 (function () {
-  // Easter egg: five quick taps on the mirror photo flip it to "Klikni me"; tapping that opens the message.
+  // Easter egg: five quick taps on the mirror photo flip it to "Klikni me"; tapping that opens the night sea and the message.
   var lens = document.getElementById('mirror');
   var back = document.getElementById('mirror-back');
   var egg = document.getElementById('egg');
   if (!lens || !back || !egg) return;
+  var center = document.getElementById('egg-center');
+  var canvas = document.getElementById('egg-sea');
   var closeBtn = document.getElementById('egg-close');
-  var burst = document.getElementById('egg-burst');
+  var musicBtn = document.getElementById('egg-music');
   var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var HEART = 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.8z';
   // Kept encoded so the words stay out of search results and link previews of the public page.
@@ -778,13 +981,14 @@ a.mail { color: var(--on-ink); text-decoration: underline; text-decoration-thick
     en2: 'WW91IGZpeCBzbWlsZXMuIFlvdSBtYWRlIG1pbmUu',
     ar2: '2KPZhtiq2ZAg2LPYqNioINin2KjYqtiz2KfZhdiq2Yo='
   };
+  // "I like you" in many languages, in three layers over the water (far, middle, near).
   var LIKE = {
-    r1: [['Sviđaš mi se', 'bs'], ['I like you', 'en'], ['أنا معجب بكِ', 'ar'], ['Me gustas', 'es'], ['Tu me plais', 'fr'], ['Ich mag dich', 'de']],
-    r2: [['好きです', 'ja'], ['좋아해', 'ko'], ['我喜欢你', 'zh'], ['Ты мне нравишься', 'ru'], ['Mi piaci', 'it'], ['Gosto de ti', 'pt']],
-    r3: [['Senden hoşlanıyorum', 'tr'], ['Μου αρέσεις', 'el'], ['Lubię cię', 'pl'], ['Ik vind je leuk', 'nl'], ['Jag gillar dig', 'sv'], ['Ti më pëlqen', 'sq']],
-    r4: [['ازت خوشم میاد', 'fa'], ['मुझे तुम पसंद हो', 'hi'], ['Aku suka kamu', 'id'], ['Tetszel nekem', 'hu'], ['Îmi placi', 'ro'], ['Pidän sinusta', 'fi'], ['Ти мені подобаєшся', 'uk']]
+    r1: [['好きです', 'ja'], ['좋아해', 'ko'], ['我喜欢你', 'zh'], ['Ты мне нравишься', 'ru'], ['Μου αρέσεις', 'el'], ['Lubię cię', 'pl'], ['Tetszel nekem', 'hu'], ['Pidän sinusta', 'fi']],
+    r2: [['Senden hoşlanıyorum', 'tr'], ['ازت خوشم میاد', 'fa'], ['मुझे तुम पसंद हो', 'hi'], ['Ik vind je leuk', 'nl'], ['Jag gillar dig', 'sv'], ['Ti më pëlqen', 'sq'], ['Aku suka kamu', 'id'], ['Îmi placi', 'ro'], ['Ти мені подобаєшся', 'uk']],
+    r3: [['Sviđaš mi se', 'bs'], ['I like you', 'en'], ['أنا معجب بكِ', 'ar'], ['Me gustas', 'es'], ['Tu me plais', 'fr'], ['Ich mag dich', 'de'], ['Mi piaci', 'it'], ['Gosto de ti', 'pt']]
   };
-  var taps = 0, last = 0, ready = false, fontsAsked = false, closeTimer;
+  var taps = 0, last = 0, ready = false, fontsAsked = false, busy = false;
+  var sea = null, seaTried = false, audio = null, musicOn = true, fadeRaf = 0;
 
   function decode(b64) {
     try {
@@ -825,43 +1029,140 @@ a.mail { color: var(--on-ink); text-decoration: underline; text-decoration-thick
     back.tabIndex = on ? 0 : -1;
     back.setAttribute('aria-hidden', on ? 'false' : 'true');
   }
-  function hearts() {
-    if (reduce || !burst) return;
-    burst.innerHTML = '';
-    for (var i = 0; i < 18; i++) {
-      var a = (i / 18) * Math.PI * 2 + Math.random() * 0.35;
-      var d = 90 + Math.random() * 120;
-      var el = document.createElement('span');
-      el.className = 'egg-fly' + (i % 3 === 0 ? ' sky' : '');
-      el.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'px');
-      el.style.setProperty('--dy', (Math.sin(a) * d - 30).toFixed(1) + 'px');
-      el.style.setProperty('--r', ((Math.random() - 0.5) * 80).toFixed(0) + 'deg');
-      el.style.setProperty('--s', (10 + Math.random() * 14).toFixed(0) + 'px');
-      el.style.animationDelay = (0.3 + Math.random() * 0.25).toFixed(2) + 's';
-      el.innerHTML = heart('');
-      burst.appendChild(el);
+
+  // Music: starts on the tap that opens the message, fades in and out, loops.
+  function getAudio() {
+    if (!audio) {
+      audio = new Audio();
+      audio.src = 'muzika.mp3';
+      audio.loop = true;
+      audio.preload = 'auto';
     }
-    setTimeout(function () { burst.innerHTML = ''; }, 2600);
+    return audio;
+  }
+  function fadeTo(target, ms, done) {
+    cancelAnimationFrame(fadeRaf);
+    var a = audio;
+    if (!a) { if (done) done(); return; }
+    var from = a.volume, t0 = performance.now();
+    function step(now) {
+      var k = Math.min(1, (now - t0) / ms);
+      var e = k * k * (3 - 2 * k);
+      try { a.volume = Math.max(0, Math.min(1, from + (target - from) * e)); } catch (err) { /* iOS keeps volume fixed */ }
+      if (k < 1) fadeRaf = requestAnimationFrame(step); else if (done) done();
+    }
+    fadeRaf = requestAnimationFrame(step);
+  }
+  function play() {
+    var p = audio.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  function musicStart() {
+    var a = getAudio();
+    a.muted = !musicOn;
+    try { a.currentTime = 0; } catch (e) {}
+    try { a.volume = 0; } catch (e) {}
+    play();
+    fadeTo(0.9, 3000);
+  }
+  function musicStop() {
+    if (!audio) return;
+    fadeTo(0, 900, function () { audio.pause(); });
+  }
+  function setMusic(on) {
+    musicOn = on;
+    musicBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    musicBtn.setAttribute('aria-label', on ? 'Isključi muziku' : 'Uključi muziku');
+    if (!audio) return;
+    audio.muted = !on;
+    if (on && audio.paused) { play(); fadeTo(0.9, 1200); }
+  }
+
+  // The sea sits under the message; the horizon follows the end of the text.
+  function moonPos() {
+    return window.innerWidth >= 880 ? { moonX: 0.78, moonY: 0.17 } : { moonX: 0.8, moonY: 0.165 };
+  }
+  function horizon() {
+    var r = center.getBoundingClientRect();
+    var h = (r.bottom + 30) / (window.innerHeight || 1);
+    return Math.max(0.56, Math.min(0.82, h));
+  }
+  function layoutSea() {
+    if (!sea) return;
+    var m = moonPos();
+    sea.layout({ horizon: horizon(), moonX: m.moonX, moonY: m.moonY });
+    if (reduce) sea.drawAt(40);
+  }
+  function startSea() {
+    if (!seaTried) {
+      seaTried = true;
+      sea = (typeof createSea === 'function') ? createSea(canvas) : null;
+      if (!sea) egg.classList.add('no-sea');
+    }
+    if (!sea) return;
+    layoutSea();
+    if (!reduce) sea.start();
+  }
+
+  // Opening and closing: the sea grows out of the mirror and shrinks back into it.
+  function circle() {
+    var b = lens.getBoundingClientRect();
+    var cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    var dx = Math.max(cx, window.innerWidth - cx), dy = Math.max(cy, window.innerHeight - cy);
+    return { cx: cx, cy: cy, r0: b.width / 2, r1: Math.sqrt(dx * dx + dy * dy) + 4 };
+  }
+  function clip(c, r) {
+    return 'circle(' + r.toFixed(1) + 'px at ' + c.cx.toFixed(1) + 'px ' + c.cy.toFixed(1) + 'px)';
   }
   function openEgg() {
-    clearTimeout(closeTimer);
+    if (busy || !egg.hidden) return;
+    busy = true;
     loadFonts();
     prepare();
-    egg.classList.remove('is-closing');
+    var c = circle();
+    egg.classList.remove('is-leaving');
     egg.hidden = false;
+    egg.scrollTop = 0;
     document.documentElement.style.overflow = 'hidden';
-    hearts();
-    try { closeBtn.focus({ preventScroll: true }); } catch (e) { closeBtn.focus(); }
+    startSea();
+    musicStart();
+    var opened = false;
+    if (!reduce && egg.animate) {
+      try {
+        var a = egg.animate([{ clipPath: clip(c, c.r0) }, { clipPath: clip(c, c.r1) }], { duration: 1500, easing: 'cubic-bezier(.7, 0, .2, 1)' });
+        a.onfinish = function () { busy = false; };
+        opened = true;
+      } catch (e) {}
+    }
+    if (!opened) busy = false;
+    try { closeBtn.focus({ preventScroll: true }); } catch (e) {}
   }
   function closeEgg() {
-    if (egg.hidden || egg.classList.contains('is-closing')) return;
-    egg.classList.add('is-closing');
-    closeTimer = setTimeout(function () {
+    if (busy || egg.hidden) return;
+    busy = true;
+    musicStop();
+    egg.classList.add('is-leaving');
+    var c = circle();
+    function done() {
       egg.hidden = true;
-      egg.classList.remove('is-closing');
+      egg.classList.remove('is-leaving');
       document.documentElement.style.overflow = '';
-      setTimeout(function () { setFlipped(false); }, 400);
-    }, reduce ? 0 : 260);
+      if (sea) sea.stop();
+      busy = false;
+      setTimeout(function () { setFlipped(false); }, 250);
+    }
+    if (!reduce && egg.animate) {
+      try {
+        var a = egg.animate([
+          { clipPath: clip(c, c.r1), opacity: 1 },
+          { clipPath: clip(c, c.r0), opacity: 1, offset: 0.85 },
+          { clipPath: clip(c, c.r0), opacity: 0 }
+        ], { duration: 1300, easing: 'cubic-bezier(.6, 0, .3, 1)', fill: 'forwards' });
+        a.onfinish = function () { done(); a.cancel(); };
+        return;
+      } catch (e) {}
+    }
+    done();
   }
 
   lens.addEventListener('click', function () {
@@ -872,14 +1173,22 @@ a.mail { color: var(--on-ink); text-decoration: underline; text-decoration-thick
     if (taps >= 5) {
       taps = 0;
       loadFonts();
+      try { getAudio().load(); } catch (e) {}
       setFlipped(true);
     } else if (!reduce && lens.animate) {
-      lens.animate([{ transform: 'scale(1)' }, { transform: 'scale(' + (1 - taps * 0.012).toFixed(3) + ')' }, { transform: 'scale(1)' }], { duration: 240, easing: 'ease-out' });
+      lens.animate([{ transform: 'scale(1)' }, { transform: 'scale(' + (1 - taps * 0.01).toFixed(3) + ')' }, { transform: 'scale(1)' }], { duration: 320, easing: 'cubic-bezier(.3, .7, .4, 1)' });
     }
   });
   back.addEventListener('click', function (e) { e.stopPropagation(); openEgg(); });
   closeBtn.addEventListener('click', closeEgg);
+  musicBtn.addEventListener('click', function () { setMusic(!musicOn); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeEgg(); });
+  window.addEventListener('resize', function () { if (!egg.hidden) layoutSea(); });
+  document.addEventListener('visibilitychange', function () {
+    if (!audio || egg.hidden) return;
+    if (document.hidden) audio.pause();
+    else if (musicOn) play();
+  });
 })();
 </script>
 </body>
